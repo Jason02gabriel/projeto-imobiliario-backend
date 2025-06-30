@@ -30,6 +30,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/clientes/**").permitAll()
                         .requestMatchers("/api/imoveis/**").permitAll()
                         .requestMatchers("/api/contratos/**").permitAll()
+                        .requestMatchers("/api/seguradoras/**").permitAll()
                         .anyRequest().authenticated()
 
                 )
