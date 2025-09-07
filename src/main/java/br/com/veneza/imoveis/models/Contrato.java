@@ -1,9 +1,9 @@
 package br.com.veneza.imoveis.models;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -19,38 +19,15 @@ public class Contrato {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true)
-    private String codigo_contrato;
+    @Column(name = "codigo_contrato", nullable = false, unique = true)
+    private String codigoContrato;
 
-    // --- Relacionamentos Principais ---
-    @ManyToOne
-    @JoinColumn(name = "id_imovel", nullable = false)
+    @ManyToOne @JoinColumn(name = "id_imovel", nullable = false)
     private Imovel imovel;
 
-    @ManyToOne
-    @JoinColumn(name = "id_locatario", nullable = false)
+    @ManyToOne @JoinColumn(name = "id_locatario", nullable = false)
     private Cliente locatario;
 
-    // --- Dados do Contrato ---
-    @Column(nullable = false)
-    private LocalDate data_inicio;
-    private LocalDate data_final;
-    private int duracao_meses;
-    private int dia_vencimento;
-
-    // --- Valores e Taxas ---
-    @Column(precision = 12, scale = 2)
-    private BigDecimal valor_aluguel;
-    @Column(precision = 5, scale = 2)
-    private BigDecimal taxa_administracao_percentual;
-    private boolean repassa_iptu = false;
-    private boolean repassa_condominio = false;
-
-    // --- SEÇÃO DE GARANTIAS ---
-    @Enumerated(EnumType.STRING) // Diz ao JPA para salvar o nome do enum como texto (ex: "CAUCAO")
-    private TipoGarantia tipo_garantia;
-
-    // Garantia do tipo Fiador
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "contrato_fiadores",
@@ -59,27 +36,59 @@ public class Contrato {
     )
     private Set<Cliente> fiadores = new HashSet<>();
 
-    // Garantia do tipo Caução
-    @Column(precision = 12, scale = 2)
-    private BigDecimal caucao_valor;
-    @Lob
-    private String caucao_descricao; // Ex: "3x o valor do aluguel", "Cheque caução", etc.
+    @Column(name = "data_inicio", nullable = false)
+    private LocalDate dataInicio;
 
-    // Garantia do tipo Seguro Fiança
-    @ManyToOne
-    @JoinColumn(name = "id_seguradora")
+    @Column(name = "data_final")
+    private LocalDate dataFinal;
+
+    @Column(name = "duracao_meses")
+    private int duracaoMeses;
+
+    @Column(name = "dia_vencimento")
+    private int diaVencimento;
+
+    @Column(name = "valor_aluguel", precision = 12, scale = 2)
+    private BigDecimal valorAluguel;
+
+    @Column(name = "taxa_administracao_percentual", precision = 5, scale = 2)
+    private BigDecimal taxaAdministracaoPercentual;
+
+    @Column(name = "repassa_iptu")
+    private boolean repassaIptu = false;
+
+    @Column(name = "repassa_condominio")
+    private boolean repassaCondominio = false;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "tipo_garantia")
+    private TipoGarantia tipoGarantia;
+
+    @Column(name = "caucao_valor", precision = 12, scale = 2)
+    private BigDecimal caucaoValor;
+
+    @Lob @Column(name = "caucao_descricao")
+    private String caucaoDescricao;
+
+    @ManyToOne @JoinColumn(name = "id_seguradora")
     private Seguradora seguradora;
-    private String seguro_fianca_apolice;
-    @Column(precision = 12, scale = 2)
-    private BigDecimal seguro_fianca_valor;
 
-    // Garantia do tipo CredPago
-    private String credpago_codigo_contrato;
+    @Column(name = "seguro_fianca_apolice")
+    private String seguroFiancaApolice;
 
-    // --- Outros ---
-    @Column(length = 20)
-    private String status_contrato;
+    @Column(name = "seguro_fianca_valor", precision = 12, scale = 2)
+    private BigDecimal seguroFiancaValor;
+
+    @Column(name = "credpago_codigo_contrato")
+    private String credpagoCodigoContrato;
+
+    @Column(name = "status_contrato", length = 20)
+    private String statusContrato;
 
     @Lob
     private String observacao;
+
+    @OneToMany(mappedBy = "contrato", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private Set<Recibo> recibos = new HashSet<>();
 }

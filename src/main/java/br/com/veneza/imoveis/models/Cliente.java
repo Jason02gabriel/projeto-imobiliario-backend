@@ -17,66 +17,120 @@ public class Cliente {
     private Long id;
 
     // --- Dados Gerais ---
-    @Column(nullable = false, length = 10)
-    private String tipo_pessoa; // 'FISICA' ou 'JURIDICA'
+    @Column(nullable = false, length = 10, name = "tipo_pessoa")
+    private String tipoPessoa; // 'FISICA' ou 'JURIDICA'
 
-    @Column(nullable = false)
-    private String nome_razao_social;
+    @Column(nullable = false, name = "nome_razao_social")
+    private String nomeRazaoSocial;
 
-    @Column(nullable = false, unique = true, length = 18)
-    private String cpf_cnpj;
+    @Column(nullable = false, unique = true, length = 18, name = "cpf_cnpj")
+    private String cpfCnpj;
 
+    @Column(name = "status")
     private boolean status = true; // Ativo ou Inativo
 
     // --- Dados de Pessoa Física ---
+    @Column(name = "rg")
     private String rg;
-    private String rg_orgao_expedidor;
+
+    @Column(name = "rg_orgao_expedidor")
+    private String rgOrgaoExpedidor;
+
+    @Column(name = "nacionalidade")
     private String nacionalidade;
-    private LocalDate data_nascimento;
+
+    @Column(name = "data_nascimento")
+    private LocalDate dataNascimento;
+
+    @Column(name = "sexo")
     private String sexo;
-    private String estado_civil;
+
+    @Column(name = "estado_civil")
+    private String estadoCivil;
+
+    @Column(name = "profissao")
     private String profissao;
 
     // --- Dados de Pessoa Jurídica ---
-    private String nome_fantasia;
-    private String inscricao_estadual;
+    @Column(name = "nome_fantasia")
+    private String nomeFantasia;
+
+    @Column(name = "inscricao_estadual")
+    private String inscricaoEstadual;
 
     // --- Contato ---
-    @Column(unique = true)
+    @Column(unique = true, name = "email")
     private String email;
+
+    @Column(name = "fone1")
     private String fone1;
+
+    @Column(name = "fone2")
     private String fone2;
+
+    @Column(name = "celular1")
     private String celular1;
+
+    @Column(name = "celular2")
     private String celular2;
 
     // --- Endereço ---
-    private String endereco_cep;
-    private String endereco_logradouro;
-    private String endereco_numero;
-    private String endereco_complemento;
-    private String endereco_bairro;
-    private String endereco_cidade;
-    @Column(length = 2)
-    private String endereco_uf;
+    @Column(name = "endereco_cep")
+    private String enderecoCep;
+
+    @Column(name = "endereco_logradouro")
+    private String enderecoLogradouro;
+
+    @Column(name = "endereco_numero")
+    private String enderecoNumero;
+
+    @Column(name = "endereco_complemento")
+    private String enderecoComplemento;
+
+    @Column(name = "endereco_bairro")
+    private String enderecoBairro;
+
+    @Column(name = "endereco_cidade")
+    private String enderecoCidade;
+
+    @Column(length = 2, name = "endereco_uf")
+    private String enderecoUf;
 
     // --- Dados Bancários ---
+    @Column(name = "banco")
     private String banco;
+
+    @Column(name = "agencia")
     private String agencia;
+
+    @Column(name = "conta")
     private String conta;
-    private String tipo_conta;
+
+    @Column(name = "tipo_conta")
+    private String tipoConta;
 
     // --- Dados do Cônjuge (se aplicável) ---
-    private String conjuge_nome;
-    private String conjuge_cpf;
-    private String conjuge_rg;
-    private String conjuge_profissao;
+    @Column(name = "conjuge_nome")
+    private String conjugeNome;
+
+    @Column(name = "conjuge_cpf")
+    private String conjugeCpf;
+
+    @Column(name = "conjuge_rg")
+    private String conjugeRg;
+
+    @Column(name = "conjuge_profissao")
+    private String conjugeProfissao;
 
     // --- Outros ---
-    @Lob // @Lob indica que o campo pode armazenar um grande volume de texto
+    @Lob
+    @Column(name = "observacao")
     private String observacao;
 
     // --- Acesso ao Portal do Cliente ---
-    private String login_portal;
-    private String senha_portal;
+    @Column(name = "login_portal")
+    private String loginPortal;
 
+    @Column(name = "senha_portal")
+    private String senhaPortal;
 }
